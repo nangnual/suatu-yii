@@ -1,7 +1,9 @@
 <?php
 
 use yii\helpers\Html;
-use yii\grid\GridView;
+use yii\helpers\Url;
+// use yii\grid\GridView;
+use kartik\grid\GridView;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UjianSearch */
@@ -29,8 +31,18 @@ $this->params['breadcrumbs'][] = $this->title;
             'nama_test',
             'waktu_test',
             'durasi_test',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'format' => 'raw',
+                'value' => function($model){
+                    return '<a href="'. Url::to(['/soal-ujian/create', 'idUjian' => $model->id]) . '">Daftar Soal</a>';
+                }
+            ],
+            [
+                'format' => 'raw',
+                'value' => function($model){
+                    return '<a href="'. Url::to(['/peserta-test/create', 'idUjian' => $model->id]) . '">Daftar Peserta</a>';
+                }
+            ]
         ],
     ]); ?>
 </div>
