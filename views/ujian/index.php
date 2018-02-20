@@ -40,7 +40,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'format' => 'raw',
                 'value' => function($model){
-                    return '<a href="'. Url::to(['/peserta-test/create', 'idUjian' => $model->id]) . '">Daftar Peserta</a>';
+                    return '<a href="'. Url::to(['/peserta-test/index', 'idUjian' => $model->id]) . '">Daftar Peserta</a>';
                 }
             ]
         ],
