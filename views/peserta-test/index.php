@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
+use kartik\export\ExportMenu;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\PesertaTestSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -20,6 +21,32 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('tambah Peserta', ['create', 'idUjian' => $idUjian], ['class' => 'btn btn-success']) ?>
     </p>
+
+    <?= 
+                 ExportMenu::widget([
+                    'dataProvider' => $dataProvider,
+                    'target' => '_self',
+                    'batchSize' => 0,
+                    'columns' => [
+                        'nama',
+                        'email',
+                        'password'
+                    ],
+                    'fontAwesome' => true,
+                    'dropdownOptions' => [
+                        'label' => 'Export',
+                        // 'icon'=> '<i class="fa  fa-download" style="color:#fff;"></i>',
+                        // 'style' => 'color:#fff;',
+
+                        'class' => 'btn btn-block blue btn-default'
+                    ],
+                    'columnSelectorOptions'=>[
+                        'label' => 'Filter',
+                        'class' => 'btn btn-block btn-default',
+                        
+                    ]
+                ]);
+     ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
