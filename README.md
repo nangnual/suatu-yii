@@ -17,4 +17,6 @@ return [
 
 ### Generate Table
   run 
-  ``` database_creation.sql```
+  ``` database_creation.sql``` will create database and tables necessary
+
+### Install dependencies with composer
