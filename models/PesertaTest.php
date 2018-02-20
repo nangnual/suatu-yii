@@ -13,7 +13,7 @@ use Yii;
  * @property string $password
  * @property int $id_ujian
  */
-class PesertaTest extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
+class PesertaTest extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
