@@ -33,14 +33,16 @@ class SoalUjianController extends Controller
      * Lists all SoalUjian models.
      * @return mixed
      */
-    public function actionIndex($idUjian=0)
+    public function actionIndex($idUjian)
     {
         $searchModel = new SoalUjianSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider->query->andWhere(['id_ujian' => $idUjian]);
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'idUjian' => $idUjian
         ]);
     }
 
@@ -67,7 +69,7 @@ class SoalUjianController extends Controller
         $model = new SoalUjian();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'idUjian' => $model->id_ujian]);
         }
 
         $model->id_ujian = $idUjian;

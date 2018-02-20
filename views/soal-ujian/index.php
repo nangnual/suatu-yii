@@ -7,7 +7,8 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\SoalUjianSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Soal Ujians';
+$this->title = 'Soal Ujian';
+$this->params['breadcrumbs'][] = ['label' => 'Ujian', 'url' => ['ujian/index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="soal-ujian-index">
@@ -16,7 +17,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Soal Ujian', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tambah Soal ', ['create', 'idUjian' => $idUjian], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?= GridView::widget([
