@@ -11,6 +11,9 @@ use Yii;
  * @property string $nama_test
  * @property string $waktu_test
  * @property int $durasi_test
+ *
+ * @property PesertaTest[] $pesertaTests
+ * @property SoalUjian[] $soalUjians
  */
 class Ujian extends \yii\db\ActiveRecord
 {
@@ -45,5 +48,21 @@ class Ujian extends \yii\db\ActiveRecord
             'waktu_test' => 'Waktu Test',
             'durasi_test' => 'Durasi Test',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPesertaTests()
+    {
+        return $this->hasMany(PesertaTest::className(), ['id_ujian' => 'id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getSoalUjians()
+    {
+        return $this->hasMany(SoalUjian::className(), ['id_ujian' => 'id']);
     }
 }

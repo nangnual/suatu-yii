@@ -18,7 +18,7 @@ class PesertaTestSearch extends PesertaTest
     public function rules()
     {
         return [
-            [['id', 'id_ujian'], 'integer'],
+            [['id', 'id_user', 'id_ujian'], 'integer'],
             [['nama', 'email', 'password'], 'safe'],
         ];
     }
@@ -60,6 +60,7 @@ class PesertaTestSearch extends PesertaTest
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'id_user' => $this->id_user,
             'id_ujian' => $this->id_ujian,
         ]);
 
