@@ -4,10 +4,12 @@ namespace app\controllers;
 
 use Yii;
 use app\models\PesertaTest;
+use app\models\Users;
 use app\models\PesertaTestSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use app\components\Helper;
 
 /**
  * PesertaTestController implements the CRUD actions for PesertaTest model.
@@ -27,80 +29,6 @@ class PesertaTestController extends Controller
                 ],
             ],
         ];
-    }
-
-     /**
-     * @inheritdoc
-     */
-    public static function findIdentity($id)
-    {
-        return isset(self::$users[$id]) ? new static(self::$users[$id]) : null;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        foreach (self::$users as $user) {
-            if ($user['accessToken'] === $token) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        foreach (self::$users as $user) {
-            if (strcasecmp($user['username'], $username) === 0) {
-                return new static($user);
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAuthKey()
-    {
-        return $this->authKey;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->authKey === $authKey;
-    }
-
-    /**
-     * Validates password
-     *
-     * @param string $password password to validate
-     * @return bool if password provided is valid for current user
-     */
-    public function validatePassword($password)
-    {
-        return $this->password === $password;
     }
 
     /**
@@ -143,7 +71,16 @@ class PesertaTestController extends Controller
         $model = new PesertaTest();
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->password = $this->makePassword(date("Y-m-d H:i:s"));
+            $user = Users::findByEmail($model->email);
+            // die(var_dump($user));
+            if(null == $user){
+                $user = new Users();
+                $user->email = $model->email;
+                $user->save();
+                $user->refresh();
+            }
+            $model->password = Helper::makePassword(date("Y-m-d H:i:s"));
+            $model->id_user = $user->id;
             if($model->save()){
                 return $this->redirect(['index', 'idUjian' => $model->id_ujian]);
             }
@@ -153,14 +90,6 @@ class PesertaTestController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
-    }
-
-
-    public static function makePassword($password)
-    {
-        $tempPass = md5(trim($password));
-        $finalPass = sha1($tempPass.substr($tempPass, 4,10));
-        return $finalPass;
     }
 
     /**
