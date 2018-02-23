@@ -84,6 +84,11 @@ class PesertaTestController extends Controller
             $model->token = Helper::makeTokenUjian($model->password);
             $model->statusUjian = $PesertaTest::STATUS_UJIAN_NOT_STARTED;
             if($model->save()){
+                Yii::$app->mailer->compose('/compose/general',['email' => $user->email, 'passoword' => $model->password])
+                    ->setFrom('from@domain.com')
+                    ->setTo('mygmart1@gmail.com')
+                    ->setSubject('test mail ')
+                    ->send();
                 return $this->redirect(['index', 'idUjian' => $model->id_ujian]);
             }
         }
