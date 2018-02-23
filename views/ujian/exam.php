@@ -2,6 +2,7 @@
 
 use yii\web\View;
 use yii\helpers\Html;
+use yii\widgets\Pjax;
 
 $minute[0] = 0;
 $id = 1;
@@ -51,21 +52,27 @@ $this->registerJs(
 		 ?>
 		<div class="tab-pane <?php echo $isActive ?>" id="tab_<?php echo $tabId ?>">
 			<div class="row">
-				<?php echo $soal->soal ?>
+				<div class="panel panel-info">
+					<div class="panel-body">
+						<?php echo $soal->soal ?>
+					</div>
+				</div>
 			</div>
 			<div class="row">
 				<?php 
 					if(0 < $tabId){
-						// echo "<a href='#tab_0' class='btn btn-info'>Prev</a>";
-						echo Html::a('Prev',['detail'], ['data-toggle' =>'modal', 'data-target'=>'#detail-modal', 'id' => 'detail-button', 'class' => 'btn btn-info']) ;
+						echo "<a href='#tab_". ($tabId -1) ."' class='btn btn-info' data-toggle='tab'>Prev</a>";
+						//echo Html::a('Prev',['detail'], ['data-toggle' =>'modal', 'data-target'=>'#detail-modal', 'id' => 'detail-button', 'class' => 'btn btn-info']) ;
 					}
 					echo "&nbsp;";
 					if(count($soalUjian) > $tabId){
-						echo Html::a('Next',['detail'], ['data-toggle' =>'modal', 'data-target'=>'#detail-modal', 'id' => 'detail-button', 'class' => 'btn btn-info']);
+						echo "<a href='#tab_". ($tabId +1) ."' class='btn btn-info' data-toggle='tab'>Next</a>";
+						//echo Html::a('Next',['detail'], ['data-toggle' =>'modal', 'data-target'=>'#detail-modal', 'id' => 'detail-button', 'class' => 'btn btn-info']);
 					}
 				 ?>
 			</div>
 			<?php $tabId++ ?>
 		</div>
 	<?php endforeach ?>
+	</div>
 </div>
