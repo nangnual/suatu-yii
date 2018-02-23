@@ -4,6 +4,7 @@ use yii\web\View;
 use yii\helpers\Html;
 use yii\widgets\Pjax;
 
+use kartik\widgets\ActiveForm;
 $minute[0] = 0;
 $id = 1;
 
@@ -41,6 +42,33 @@ $this->registerJs(
 
 	", View::POS_HEAD
 );
+
+$ajax =<<< JS
+	$.ajax({
+	    type: "POST",
+	    url: $.nds.base_url + '/advanceclearance/savedetail',
+	    data: $(this).serialize(),
+	    success: function( response ) {
+	        console.log(response);
+	            $.gritter.add({
+	                title: 'Information',
+	                text: 'Berhasil menyimpan data.'
+	            });
+	            
+	            App.unblockUI();
+	            refreshpage();
+	    },
+	    error: function(response) {
+	        $.gritter.add({
+	            title: 'Information',
+	            text: 'Gagal menyimpan data.'
+	        });
+	        App.unblockUI();   
+	    }
+	});
+JS;
+
+$this->registerJs($ajax, View::POS_READY);
  ?>
 <div class="tab-content">
 	<?php 
@@ -54,7 +82,15 @@ $this->registerJs(
 			<div class="row">
 				<div class="panel panel-info">
 					<div class="panel-body">
-						<?php echo $soal->soal ?>
+						<p>
+							<?php echo $soal->soal ?>
+						</p>
+
+						<?php $form = ActiveForm::begin(); ?>
+
+						    <?= $form->field($jawaban, 'jawaban')->textArea() ?>
+					    <?php ActiveForm::end(); ?>
+
 					</div>
 				</div>
 			</div>
