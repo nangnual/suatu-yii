@@ -99,12 +99,30 @@ class PesertaTest extends \yii\db\ActiveRecord
         return $peserta;
     }
 
-    public function isAllowed()
+    public function getTestLink()
     {
-        if($this->statusUjian >= self::STATUS_UJIAN_ONGOING ){
-            return false;
+        if (null != $this->waktuStartUjian){
+            $waktuMulai = strtotime($this->waktuStartUjian);
+            $now = strtotime('-3 minutes');
+            if($now > $waktuMulai){
+                return 'ujian/instruksi';
+            }
+            return 'ujian/exam';
         }
 
         // if($this->)
+    }
+
+    public static function getRemainingTime()
+    {
+        $waktuMulai = strtotime($this->waktuStartUjian);
+        $waktuInstruksi = strtotime('-3 minutes');
+        $now = strtotime('now');
+        // $waktuSisa = $now - $
+        if($waktuInstruksi > $waktuMulai){ 
+
+            return 'ujian/instruksi';
+        }
+        return 'ujian/exam';
     }
 }
