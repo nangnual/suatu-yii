@@ -19,15 +19,16 @@ use kartik\datetime\DateTimePicker;
     <?= $form->field($model, 'waktu_test')->widget(DateTimePicker::className(), [
     	   // 'name' => $model->waktu_test,
 	    'options' => ['placeholder' => 'Select operating time ...'],
-	    // 'convertFormat' => true,
-	    'pluginOptions' => [
-	        'format' => 'yyyy-mm-dd H:i:s',
-	        // 'startDate' => '01-Mar-2014 12:00 AM',
-	        'todayHighlight' => true
-    	]
-    	]);?>
+        // 'convertFormat' => true,
+        'pluginOptions' => [
+            'format' => 'yyyy-mm-dd H:i:s',
+            // 'startDate' => '01-Mar-2014 12:00 AM',
+            'todayHighlight' => true
+        ]
+        ]);?>
 
     <?= $form->field($model, 'durasi_test')->textInput() ?>
+    <?= $form->field($model, 'instruksi')->textArea() ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
