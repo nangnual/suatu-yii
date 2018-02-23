@@ -81,6 +81,8 @@ class PesertaTestController extends Controller
             }
             $model->password = Helper::makePassword(date("Y-m-d H:i:s"));
             $model->id_user = $user->id;
+            $model->token = Helper::makeTokenUjian($model->password);
+            $model->statusUjian = $PesertaTest::STATUS_UJIAN_NOT_STARTED;
             if($model->save()){
                 return $this->redirect(['index', 'idUjian' => $model->id_ujian]);
             }
