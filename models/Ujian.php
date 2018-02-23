@@ -34,7 +34,7 @@ class Ujian extends \yii\db\ActiveRecord
             [['waktu_test'], 'safe'],
             [['durasi_test'], 'integer'],
             [['nama_test'], 'string', 'max' => 255],
-            [['instruksi'], 'text'],
+            [['instruksi'], 'string'],
         ];
     }
 
