@@ -9,6 +9,8 @@ use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\PesertaTest;
+use app\models\Users;
 use yii\web\NotFoundHttpException;
 
 class SiteController extends Controller
@@ -77,9 +79,40 @@ class SiteController extends Controller
         }
 
         $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
+
+        if($model->load(Yii::$app->request->post())){
+            $postValues = Yii::$app->request->post('LoginForm');
+            $user = Users::findByEmail($postValues['email']);
+            if(null != $user){
+                $bolehLogin = $user->login($user, $postValues['password'], $user->isAdmin);
+                if($bolehLogin){
+                    Yii::$app->user->login($user, 3600*24*30);
+                    if($user->isAdmin){
+                        $this->redirect(['/ujian/index']);
+                    }else{
+                        // return "user bukanadmin login";
+                        $peserta = PesertaTest::find()->where(['id_user' => $user->id, 'password' => $postValues['password']])->one();
+                        $this->redirect(['/ujian/start', 'token' => $peserta->token ]);
+                    }
+                }
+            }
+            // $model->addError('password', 'incorrect');
+            $model->addError('password', 'combination incorrect');
         }
+
+        // if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        //     // return $this->goBack();
+        //     $loggedUser = Yii::$app->user->identity;
+        //     if(!$loggedUser->isAdmin){
+        //         $peserta = PesertaTest::find()->where(['email' => $loggedUser->email, 'password' => Yii::$app->request->post('LoginForm[password]')])->one();
+
+        //         if(null != $peserta){
+        //             if($peserta->)
+        //         }
+
+        //     }
+        // }
+
         return $this->render('login', [
             'model' => $model,
         ]);
