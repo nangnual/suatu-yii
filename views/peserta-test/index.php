@@ -30,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     'columns' => [
                         'nama',
                         'email',
-                        'password'
+                        'password',
                     ],
                     'fontAwesome' => true,
                     'dropdownOptions' => [
@@ -55,10 +55,12 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
+            'id_user',
+            'id_ujian',
             'nama',
             'email:email',
             'password',
-            'id_ujian',
+            'token',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
