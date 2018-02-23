@@ -19,6 +19,7 @@ class PesertaTestSearch extends PesertaTest
     {
         return [
             [['id', 'id_user', 'id_ujian'], 'integer'],
+            [['email', 'token'], 'string'],
             [['nama', 'email', 'password'], 'safe'],
         ];
     }
@@ -62,11 +63,13 @@ class PesertaTestSearch extends PesertaTest
             'id' => $this->id,
             'id_user' => $this->id_user,
             'id_ujian' => $this->id_ujian,
+            'token' => $this->token,
         ]);
 
         $query->andFilterWhere(['like', 'nama', $this->nama])
             ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'password', $this->password]);
+            ->andFilterWhere(['like', 'password', $this->password])
+            ->andFilterWhere(['like', 'token', $this->token]);
 
         return $dataProvider;
     }

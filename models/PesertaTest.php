@@ -20,6 +20,11 @@ use Yii;
  */
 class PesertaTest extends \yii\db\ActiveRecord
 {
+
+    public const STATUS_UJIAN_NOT_STARTED = 0;
+    public const STATUS_UJIAN_INSTRUKSI = 1;
+    public const STATUS_UJIAN_ONGOING = 2;
+    public const STATUS_UJIAN_FINISHED = 3;
     /**
      * @inheritdoc
      */
@@ -36,7 +41,7 @@ class PesertaTest extends \yii\db\ActiveRecord
         return [
             [['id_user', 'email', 'password', 'id_ujian'], 'required'],
             [['id_user', 'id_ujian'], 'integer'],
-            [[ 'email', 'password'], 'string', 'max' => 255],
+            [[ 'email', 'password', 'token'], 'string', 'max' => 255],
             [['id_ujian'], 'exist', 'skipOnError' => true, 'targetClass' => Ujian::className(), 'targetAttribute' => ['id_ujian' => 'id']],
             [['id_user'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['id_user' => 'id']],
         ];
@@ -79,5 +84,27 @@ class PesertaTest extends \yii\db\ActiveRecord
     public function getUser()
     {
         return $this->hasOne(Users::className(), ['id' => 'id_user']);
+    }
+
+    public static function getByEmailPassword($email, $password)
+    {
+        // $peserta false;
+        $peserta = self::find()->where(['email' => $email, 'password' => $password])->one();
+
+    }
+
+    public static function findByIdUserToken($idUser, $token)
+    {
+        $peserta = self::find()->where(['id_user' => $idUser, 'token' => $token])->one();
+        return $peserta;
+    }
+
+    public function isAllowed()
+    {
+        if($this->statusUjian >= self::STATUS_UJIAN_ONGOING ){
+            return false;
+        }
+
+        // if($this->)
     }
 }
