@@ -5,8 +5,10 @@ namespace app\controllers;
 use Yii;
 use app\models\Ujian;
 use app\models\UjianSearch;
+use app\models\PesertaTest;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\filters\VerbFilter;
 
 /**
@@ -35,6 +37,7 @@ class UjianController extends Controller
      */
     public function actionIndex()
     {
+        // throw new ForbiddenHttpException('Waktu Habis');
         $searchModel = new UjianSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
@@ -123,5 +126,74 @@ class UjianController extends Controller
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
+    }
+
+    public function actionStart($token)
+    {
+        $peserta = PesertaTest::find()->where(['email' => Yii::$app->user->identity->email, 'token' => $token])->one();
+            if(null == $peserta){
+                throw new NotFoundHttpException("Test Not found");
+            }
+
+
+            switch ($peserta->statusUjian) {
+
+                case PesertaTest::STATUS_UJIAN_NOT_STARTED:
+                    // $cookies  = Yii::$app->response->cookies;
+                    // $namaCookieUjian = 'ujian' . $peserta->token;
+                    // $cookies->add(new \yii\web\Cookie([
+                    //     $namaCookieUjian => 0,
+                    // ]));
+                    // $peserta->statusUjian = PesertaTest::STATUS_UJIAN_INSTRUKSI;
+                    // $peserta->save();
+                    return $this->redirect(['instruksi', 'token' => $token]);
+                    break;
+
+                case PesertaTest::STATUS_UJIAN_INSTRUKSI:
+                    return $this->redirect(['instruksi', 'token' => $token]);
+
+                case PesertaTest::STATUS_UJIAN_ON_GOING:
+                    return $this->redirect(['exam', 'token' => $token]);
+
+                default:
+                    return $this->redirect(['instruksi', 'token' => $token]);
+                    break;
+            }
+    }
+
+    public function actionInstruksi($token)
+    {
+        $user = Yii::$app->user->identity;
+        $peserta = PesertaTest::findByIdUserToken($user->id, $token);
+        $ujian = Ujian::findOne($peserta->id_ujian);
+        return $this->render('instruksi', ['ujian' => $ujian, 'token' => $token]);
+        // TODO check minute cookie
+
+        $peserta = PesertaTest::find()->where(['email' => $user->email, 'token' => $token])->one();
+        if( (60*3) > $cookie->get($namaCookieUjian) ) {
+            return $this->redirect(['exam', 'token' => $token]);
+            if(null == $ujian){
+                throw new NotFoundHttpException("Test tidak ditemukan", 1);
+            }
+            
+        }
+    }
+
+    public function actionExam($token)
+    {
+        // TODO check minute cookie
+        $user = Yii::$app->user->identity;
+        $peserta = PesertaTest::findByIdUserToken($user->id, $token);
+        $ujian = Ujian::findOne($peserta->id_ujian); 
+        // echo "<pre>";
+        // print_r($ujian->soalUjians);
+        // echo "</pre>";
+        // die();
+        return $this->render('exam', ['soalUjian' => $ujian->soalUjians]);
+        $peserta = PesertaTest::find()->where(['email' => Yii::$app->user->identity->email, 'token' => $token])->one();
+        if((60 * $ujian->durasi_test) < $cookies->get($namaCookieUjian)){
+
+        }
+
     }
 }
