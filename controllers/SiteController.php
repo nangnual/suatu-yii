@@ -92,6 +92,7 @@ class SiteController extends Controller
                     }else{
                         // return "user bukanadmin login";
                         $peserta = PesertaTest::find()->where(['id_user' => $user->id, 'password' => $postValues['password']])->one();
+                        $redirectLink = $peserta->getTestLink();
                         $this->redirect(['/ujian/start', 'token' => $peserta->token ]);
                     }
                 }
