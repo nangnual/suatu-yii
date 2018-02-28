@@ -21,10 +21,10 @@ use Yii;
 class PesertaTest extends \yii\db\ActiveRecord
 {
 
-    public const STATUS_UJIAN_NOT_STARTED = 0;
-    public const STATUS_UJIAN_INSTRUKSI = 1;
-    public const STATUS_UJIAN_ONGOING = 2;
-    public const STATUS_UJIAN_FINISHED = 3;
+    const STATUS_UJIAN_NOT_STARTED = 0;
+    const STATUS_UJIAN_INSTRUKSI = 1;
+    const STATUS_UJIAN_ONGOING = 2;
+    const STATUS_UJIAN_FINISHED = 3;
     /**
      * @inheritdoc
      */
