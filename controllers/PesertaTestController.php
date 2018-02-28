@@ -82,9 +82,9 @@ class PesertaTestController extends Controller
             $model->password = Helper::makePassword(date("Y-m-d H:i:s"));
             $model->id_user = $user->id;
             $model->token = Helper::makeTokenUjian($model->password);
-            $model->statusUjian = $PesertaTest::STATUS_UJIAN_NOT_STARTED;
+            $model->statusUjian = PesertaTest::STATUS_UJIAN_NOT_STARTED;
             if($model->save()){
-                Yii::$app->mailer->compose('/compose/general',['email' => $user->email, 'passoword' => $model->password])
+                Yii::$app->mailer->compose('/compose/general',['email' => $user->email, 'password' => $model->password])
                     ->setFrom('from@domain.com')
                     ->setTo('mygmart1@gmail.com')
                     ->setSubject('test mail ')
